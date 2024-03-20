@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5001
 app.use(express.json())
 app.use(cors())
 // app.use(bodyParser.json())
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: true}))
 app.use("/api", postRouter)
 
 app.get("/", (req,res) => {

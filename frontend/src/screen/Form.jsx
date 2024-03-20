@@ -34,10 +34,18 @@ const userSchema = z.object({
     .string()
     .min(3, { message: "Desired Outcome must be given" }),
   date: z.string().min(3, { message: "Date must be chosen" }),
+  urgent: z.boolean().default(false),
+  critical: z.boolean().default(false),
+  routine: z.boolean().default(false),
+  bankDetailsChange: z.boolean().default(false),
+  propertyOwnershipChange: z.boolean().default(false),
+  accountNameChange: z.boolean().default(false),
+  otherChange: z.boolean().default(false),
+  uploads: z.string()
 });
 
-const  Form = () => {
-  const navigate = useNavigate()
+const Form = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     propertyID: "",
     propertyAddress: "",
@@ -56,7 +64,6 @@ const  Form = () => {
     urgent: false,
     critical: false,
     routine: false,
-    uploads: "",
   });
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -67,13 +74,12 @@ const  Form = () => {
     try {
       const validatedData = userSchema.parse(user);
       setLoading(true);
-      console.log("....")
+      console.log("....");
       const response = await axios.post(
-        "http://localhost:8001/api/changeRequest",
-        validatedData
+        "http://localhost:8001/api/changeRequest",validatedData
       );
       console.log("Submission success", response.data);
-      navigate("/success")
+      navigate("/success");
     } catch (error) {
       if (error instanceof ZodError) {
         setErrors(error.errors);
@@ -372,7 +378,8 @@ const  Form = () => {
         id="uploads"
         name="uploads"
         type="file"
-        onChange={(e) => setUser({ ...user, uploads: e.target.files[0] })}
+        value={user.uploads}
+        onChange={(e) => setUser({ ...user, uploads: e.target.value })}
       />
 
       <button
