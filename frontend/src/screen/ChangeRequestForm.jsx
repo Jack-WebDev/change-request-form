@@ -44,7 +44,7 @@ const userSchema = z.object({
   uploads: z.string()
 });
 
-const Form = () => {
+const ChangeRequestForm = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
     propertyID: "",
@@ -400,4 +400,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ChangeRequestForm;
