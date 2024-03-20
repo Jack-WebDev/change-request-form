@@ -29,7 +29,7 @@ const postForm = async (req, res) => {
       propertyID: propertyID,
       propertyAddress: propertyAddress,
       propertyName: propertyName,
-      changeDescriptonDetails: changeDescriptionDetails,
+      changeDescriptionDetails: changeDescriptionDetails,
       bankDetailsChange: bankDetailsChange,
       propertyOwnershipChange: propertyOwnershipChange,
       accountNameChange: accountNameChange,
@@ -45,6 +45,8 @@ const postForm = async (req, res) => {
       routine: routine,
       uploads: uploads,
     });
+
+    res.status(201).json({message: "sent!"})
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

@@ -1,7 +1,7 @@
 const dotenv = require("dotenv")
 dotenv.config()
 const cors = require("cors")
-const bodyParser = require("body-parser")
+// const bodyParser = require("body-parser")
 const express = require("express")
 const postRouter = require("./backend/router/formRouter")
 const app = express()
@@ -10,8 +10,8 @@ const PORT = process.env.PORT || 5001
 
 app.use(express.json())
 app.use(cors())
-app.use(bodyParser.json())
-app.use(express.urlencoded({extended: true}))
+// app.use(bodyParser.json())
+app.use(express.urlencoded({extended: false}))
 app.use("/api", postRouter)
 
 app.get("/", (req,res) => {

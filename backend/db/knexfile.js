@@ -9,7 +9,7 @@ module.exports = {
     connection: {
       database: "nsfas-form",
       user: "postgres",
-      password: "Jackwebdev@123",
+      password: "postgres",
     },
     pool: {
       min: 2,
