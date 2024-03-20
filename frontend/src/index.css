@@ -45,15 +45,15 @@ img {
 
 
 input[type='date'] {
-  width: 40%;
-  aspect-ratio: 4/1;
+  width: 80%;
+  aspect-ratio: 6/1;
   border-radius: 5px;
-  padding: 5px;
-  display: flex;
+  padding: 15px;
   align-self: baseline;
   margin-inline-start: 10%;
   margin-block-start: .5rem;
   margin-block-end: 2rem;
+  display: inline-block;
 }
 
 .options, .priority {
