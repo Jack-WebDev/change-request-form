@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DateInput from "../components/DateInput";
 
 const userSchema = z.object({
   propertyID: z
@@ -41,7 +42,7 @@ const userSchema = z.object({
   propertyOwnershipChange: z.boolean().default(false),
   accountNameChange: z.boolean().default(false),
   otherChange: z.boolean().default(false),
-  uploads: z.string()
+  uploads: z.string(),
 });
 
 const ChangeRequestForm = () => {
@@ -76,7 +77,8 @@ const ChangeRequestForm = () => {
       setLoading(true);
       console.log("....");
       const response = await axios.post(
-        "http://localhost:8001/api/changeRequest",validatedData
+        "http://localhost:8001/api/changeRequest",
+        validatedData
       );
       console.log("Submission success", response.data);
       navigate("/success");
@@ -112,27 +114,33 @@ const ChangeRequestForm = () => {
       </h1>
       <hr />
 
-      <label htmlFor="propertyID">Property ID</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="propertyID"
-        type="text"
-        name="propertyID"
-        value={user.propertyID}
-        onChange={(e) => setUser({ ...user, propertyID: e.target.value })}
-        placeholder="Enter Property ID"
-      />
+      <div className="row1 flex w-full justify-around mb-8">
+        <div className="propertyID">
+          <label htmlFor="propertyID">Property ID</label>
+          <input
+            className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+            id="propertyID"
+            type="text"
+            name="propertyID"
+            value={user.propertyID}
+            onChange={(e) => setUser({ ...user, propertyID: e.target.value })}
+            placeholder="Enter Property ID"
+          />
+        </div>
 
-      <label htmlFor="propertyName">Property Name</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="propertyName"
-        type="text"
-        name="propertyName"
-        value={user.propertyName}
-        onChange={(e) => setUser({ ...user, propertyName: e.target.value })}
-        placeholder="Enter Property Name"
-      />
+        <div className="propertyName">
+          <label htmlFor="propertyName">Property Name</label>
+          <input
+            className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+            id="propertyName"
+            type="text"
+            name="propertyName"
+            value={user.propertyName}
+            onChange={(e) => setUser({ ...user, propertyName: e.target.value })}
+            placeholder="Enter Property Name"
+          />
+        </div>
+      </div>
 
       <label htmlFor="propertyAddress">Property Address</label>
       <textarea
@@ -142,43 +150,55 @@ const ChangeRequestForm = () => {
         value={user.propertyAddress}
         onChange={(e) => setUser({ ...user, propertyAddress: e.target.value })}
         placeholder="Enter Property Address"
+        style={{ height: "10rem" }}
       />
 
-      <label htmlFor="requestorID">Requestor&apos;s ID No.</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="requestorID"
-        name="requestorID"
-        type="text"
-        value={user.requestorID}
-        onChange={(e) => setUser({ ...user, requestorID: e.target.value })}
-        placeholder="Enter Requestor's ID"
-      />
+      <div className="row2 flex justify-around items-end gap-20">
+        <div className="requestor grid">
+          <label htmlFor="requestorID">Requestor&apos;s ID No.</label>
+          <input
+            className="p-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+            id="requestorID"
+            name="requestorID"
+            type="text"
+            value={user.requestorID}
+            onChange={(e) => setUser({ ...user, requestorID: e.target.value })}
+            placeholder="Enter Requestor's ID"
+          />
+        </div>
 
-      <label htmlFor="requestorName">Requestor&apos;s Name</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="requestorName"
-        name="requestorName"
-        type="text"
-        value={user.requestorName}
-        onChange={(e) => setUser({ ...user, requestorName: e.target.value })}
-        placeholder="Enter Requestor's Name"
-      />
-      <label htmlFor="requestorJobTitle">
-        Requestor&apos;s Job Title (Role at the Property)
-      </label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="requestorJobTitle"
-        name="requestorJobTitle"
-        type="text"
-        value={user.requestorJobTitle}
-        onChange={(e) =>
-          setUser({ ...user, requestorJobTitle: e.target.value })
-        }
-        placeholder="Enter Requestor Job Title (Role at the Property)"
-      />
+        <div className="requestorName grid">
+          <label htmlFor="requestorName">Requestor&apos;s Name</label>
+          <input
+            className="p-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+            id="requestorName"
+            name="requestorName"
+            type="text"
+            value={user.requestorName}
+            onChange={(e) =>
+              setUser({ ...user, requestorName: e.target.value })
+            }
+            placeholder="Enter Requestor's Name"
+          />
+        </div>
+
+        <div className="jobTitle grid">
+          <label htmlFor="requestorJobTitle">
+            Requestor&apos;s Job Title (Role at the Property)
+          </label>
+          <input
+            className="p-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+            id="requestorJobTitle"
+            name="requestorJobTitle"
+            type="text"
+            value={user.requestorJobTitle}
+            onChange={(e) =>
+              setUser({ ...user, requestorJobTitle: e.target.value })
+            }
+            placeholder="Enter Requestor Job Title (Role at the Property)"
+          />
+        </div>
+      </div>
 
       <h2>Tick the Change Type Required:</h2>
       <div className="options">
@@ -265,45 +285,44 @@ const ChangeRequestForm = () => {
         Change Description Details
       </label>
       <textarea
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        className="p-2 border mb-8 mt-1 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 text-black"
         id="changeDescriptonDetails"
         value={user.changeDescriptionDetails}
         onChange={(e) =>
           setUser({ ...user, changeDescriptionDetails: e.target.value })
         }
         placeholder="Tell us the change descripton details"
+        style={{ height: "10rem" }}
       />
 
       <label htmlFor="reasonForChange">Reason For The Required Change</label>
       <textarea
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        className="p-2 border mb-8 mt-1 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 text-black"
         id="reasonForChange"
         name="reasonForChange"
         value={user.reasonForChange}
         onChange={(e) => setUser({ ...user, reasonForChange: e.target.value })}
         placeholder="Tell us your reason for change"
+        style={{ height: "10rem" }}
       />
 
       <label htmlFor="desiredOutcome">
         Desired Outcome (by Property Owner or Requestor)
       </label>
       <textarea
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        className="p-2 border mb-8 mt-1 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 text-black"
         id="desiredOutcome"
         name="desiredOutcome"
         value={user.desiredOutcome}
         onChange={(e) => setUser({ ...user, desiredOutcome: e.target.value })}
         placeholder="Tell us the desired outcome (by Property Owner or Requestor)"
+        style={{ height: "10rem" }}
       />
 
-      <label htmlFor="date">Date</label>
-      <input
-        type="date"
-        name="date"
-        id="date"
-        value={user.date}
-        onChange={(e) => setUser({ ...user, date: e.target.value })}
-      />
+      <div className="date grid w-4/5 mb-8">
+        <label htmlFor="date">Date</label>
+        <DateInput />
+      </div>
 
       <h2>Priority</h2>
 
@@ -326,7 +345,7 @@ const ChangeRequestForm = () => {
           />
         </div>
 
-        <div className="critical">
+        <div className="critical flex">
           <label htmlFor="critical">Critical</label>
           <input
             type="checkbox"

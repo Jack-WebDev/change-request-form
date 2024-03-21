@@ -2,20 +2,19 @@ import { z, ZodError } from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DateInput from "../components/DateInput";
 
 const userSchema = z.object({
   comments: z.string().min(3, { message: "A comment must be given" }),
-  name: z.string().min(3, { message: "A name must be given" }),
   signature: z.string().min(3, { message: "A signature must be given" }),
   date: z.string().min(3, { message: "Date must be chosen" }),
 });
 
-const CurrentOwner = () => {
+const HoD = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
     comments: "",
-    name: "",
-    signature:"",
+    signature: "",
     date: "",
   });
   const [buttonDisabled] = useState(true);
@@ -51,52 +50,49 @@ const CurrentOwner = () => {
       </h1>
       <hr />
 
+      <div className="row1 flex items-center justify-between gap-8 w-5/6 mb-10">
+        <div className="name grid gap-1 ml-4 w-1/2">
+          <label htmlFor="name">Name</label>
+          <input
+            className="p-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+            id="name"
+            type="text"
+            name="name"
+            value={user.name}
+            onChange={(e) => setUser({ ...user, name: e.target.value })}
+            placeholder="Enter your name"
+          />
+        </div>
+
+        <div className="date grid w-2/6">
+          <label htmlFor="date">Date</label>
+          <DateInput />
+        </div>
+      </div>
 
       <label htmlFor="comments">Comments</label>
       <textarea
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        className="p-2 border border-gray-300 rounded-lg mb-4 mt-1 focus:outline-none focus:border-gray-600 text-black"
         id="comments"
         name="comments"
         value={user.comments}
         onChange={(e) => setUser({ ...user, comments: e.target.value })}
-        placeholder="Your comments..."
+        placeholder="Your comments"
+        style={{ height: "10rem" }}
       />
 
-      
-      <label htmlFor="name">Name</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="name"
-        type="text"
-        name="name"
-        value={user.name}
-        onChange={(e) => setUser({ ...user, name: e.target.value })}
-        placeholder="Enter your name"
-      />
-
-      <label htmlFor="signature">Signature</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="signature"
-        type="text"
-        name="signature"
-        value={user.signature}
-        onChange={(e) => setUser({ ...user, signature: e.target.value })}
-        placeholder="Your signature..."
-      />
-
-      <label htmlFor="date">
-        Estimated Target Date for Change Implementation
-      </label>
-      <input
-        type="date"
-        name="date"
-        id="date"
-        value={user.date}
-        onChange={(e) => setUser({ ...user, date: e.target.value })}
-      />
-
-
+      <div className="sign my-8">
+        <label htmlFor="signature">Signature</label>
+        <input
+          className="p-2 border border-gray-300 w-full rounded-lg mb-4 mt-1 focus:outline-none focus:border-gray-600 text-black"
+          id="signature"
+          type="text"
+          name="signature"
+          value={user.signature}
+          onChange={(e) => setUser({ ...user, signature: e.target.value })}
+          placeholder="Your signature..."
+        />
+      </div>
 
       <button
         onClick={onSubmit}
@@ -116,4 +112,4 @@ const CurrentOwner = () => {
   );
 };
 
-export default CurrentOwner;
+export default HoD;

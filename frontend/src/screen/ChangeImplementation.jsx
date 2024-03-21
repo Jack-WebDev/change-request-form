@@ -2,6 +2,7 @@ import { z, ZodError } from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DateInput from "../components/DateInput";
 
 const userSchema = z.object({
   comments: z.string().min(3, { message: "A comment must be given" }),
@@ -48,16 +49,12 @@ const ChangeImplementation = () => {
       </h1>
       <hr />
 
-      <label htmlFor="date">
-        Estimated Target Date for Change Implementation
-      </label>
-      <input
-        type="date"
-        name="date"
-        id="date"
-        value={user.date}
-        onChange={(e) => setUser({ ...user, date: e.target.value })}
-      />
+      <div className="date mb-8 grid w-4/5 justify-start">
+        <label htmlFor="date">
+          Estimated Target Date for Change Implementation
+        </label>
+        <DateInput />
+      </div>
 
       <label htmlFor="comments">Comments</label>
       <textarea
@@ -67,6 +64,7 @@ const ChangeImplementation = () => {
         value={user.comments}
         onChange={(e) => setUser({ ...user, comments: e.target.value })}
         placeholder="Your comments..."
+        style={{height: "10rem"}}
       />
 
       <button

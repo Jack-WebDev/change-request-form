@@ -125,6 +125,7 @@ const HoD = () => {
         value={user.reasonForFailure}
         onChange={(e) => setUser({ ...user, reasonForFailure: e.target.value })}
         placeholder="Reason for failure experienced"
+        style={{ height: "10rem" }}
       />
 
       <div className="sign my-8">

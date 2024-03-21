@@ -29,22 +29,6 @@ input {
   width: 80%;
 }
 
-img {
-  position: absolute;
-}
-.blob1 {
-  right: 0;
-  top: 0;
-}
-
-.blob2 {
-  right: 40%;
-
-}
-
-
-
-
 
 .options, .priority {
   margin-block: 2rem;
@@ -76,9 +60,7 @@ textarea {
 }
 
 @media screen and (max-width: 768px) {
-  img {
-    display: none;
-  }
+
 
   .container {
     width: 90%;
