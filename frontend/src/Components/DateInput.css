@@ -1,0 +1,14 @@
+input[type="date"] {
+  width: 70%;
+  border-radius: 5px;
+  padding: 15px;
+  align-self: baseline;
+  margin-block-start: 0.5rem;
+  display: inline-block;
+}
+
+@media screen and (max-width: 768px) {
+  input[type="date"] {
+    width: 80%;
+  }
+}

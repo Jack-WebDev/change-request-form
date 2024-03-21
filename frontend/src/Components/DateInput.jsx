@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import "./DateInput.css"
 
 function DateInput() {
   const [selectedDate, setSelectedDate] = useState('');
@@ -12,8 +12,7 @@ function DateInput() {
   };
 
   return (
-    <div>
-      <label htmlFor="dateInput">Select a date:</label>
+    // <div>
       <input
         type="date"
         id="dateInput"
@@ -21,7 +20,7 @@ function DateInput() {
         min={today}
         onChange={handleDateChange}
       />
-    </div>
+    // </div>
   );
 }
 

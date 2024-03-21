@@ -2,12 +2,14 @@ import { z, ZodError } from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DateInput from "../Components/DateInput";
+import DateInput from "../components/DateInput";
 
 const userSchema = z.object({
   name: z.string().min(3, { message: "A name must be given" }),
   signature: z.string().min(3, { message: "A signature must be given" }),
   date: z.string().min(3, { message: "Date must be chosen" }),
+  yes: z.boolean().default(false),
+  no: z.boolean().default(false),
 });
 
 const HoD = () => {
@@ -16,6 +18,8 @@ const HoD = () => {
     name: "",
     signature: "",
     date: "",
+    yes: false,
+    no: false,
   });
   const [buttonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -50,37 +54,32 @@ const HoD = () => {
       </h1>
       <hr />
 
-      <label htmlFor="name">Name</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="name"
-        type="text"
-        name="name"
-        value={user.name}
-        onChange={(e) => setUser({ ...user, name: e.target.value })}
-        placeholder="Enter your name"
-      />
+      <div className="row1 flex items-center justify-between gap-8 w-5/6 mb-10">
+        <div className="name grid gap-1 ml-4 w-1/2">
+          <label htmlFor="name">Name</label>
+          <input
+            className="p-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+            id="name"
+            type="text"
+            name="name"
+            value={user.name}
+            onChange={(e) => setUser({ ...user, name: e.target.value })}
+            placeholder="Enter your name"
+          />
+        </div>
 
-      <label htmlFor="signature">Signature</label>
-      <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-        id="signature"
-        type="text"
-        name="signature"
-        value={user.signature}
-        onChange={(e) => setUser({ ...user, signature: e.target.value })}
-        placeholder="Your signature..."
-      />
+        <div className="date">
+          <label htmlFor="date">
+            Estimated Target Date for Change Implementation
+          </label>
+          <DateInput />
+        </div>
+      </div>
 
-      <label htmlFor="date">
-        Estimated Target Date for Change Implementation
-      </label>
-            <DateInput/>
-
-      <h2>Change carried out as per requirement</h2>
+      <h2>Change carried out as per requirement:</h2>
 
       <div className="options">
-        <div className="yes">
+        <div className="yes flex">
           <label htmlFor="yes">Yes</label>
           <input
             type="checkbox"
@@ -98,7 +97,7 @@ const HoD = () => {
           />
         </div>
 
-        <div className="property">
+        <div className="no flex">
           <label htmlFor="no">No</label>
           <input
             type="checkbox"
@@ -120,13 +119,26 @@ const HoD = () => {
         If “No” state failure experienced
       </label>
       <textarea
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        className="p-2 border border-gray-300 rounded-lg mb-4 mt-1 focus:outline-none focus:border-gray-600 text-black"
         id="reasonForFailure"
         name="reasonForFailure"
         value={user.reasonForFailure}
         onChange={(e) => setUser({ ...user, reasonForFailure: e.target.value })}
         placeholder="Reason for failure experienced"
       />
+
+      <div className="sign my-8">
+        <label htmlFor="signature">Signature</label>
+        <input
+          className="p-2 border border-gray-300 w-full rounded-lg mb-4 mt-1 focus:outline-none focus:border-gray-600 text-black"
+          id="signature"
+          type="text"
+          name="signature"
+          value={user.signature}
+          onChange={(e) => setUser({ ...user, signature: e.target.value })}
+          placeholder="Your signature..."
+        />
+      </div>
 
       <button
         onClick={onSubmit}
