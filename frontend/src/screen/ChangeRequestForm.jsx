@@ -34,7 +34,6 @@ const userSchema = z.object({
   desiredOutcome: z
     .string()
     .min(3, { message: "Desired Outcome must be given" }),
-  date: z.string().min(3, { message: "Date must be chosen" }),
   urgent: z.boolean().default(false),
   critical: z.boolean().default(false),
   routine: z.boolean().default(false),
@@ -61,10 +60,10 @@ const ChangeRequestForm = () => {
     requestorID: "",
     requestorName: "",
     requestorJobTitle: "",
-    date: "",
     urgent: false,
     critical: false,
     routine: false,
+    uploads: "",
   });
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -102,7 +101,7 @@ const ChangeRequestForm = () => {
       user.requestorID.length === 13 &&
       user.requestorName.length >= 3 &&
       user.requestorJobTitle.length >= 3 &&
-      user.date;
+      user.uploads;
 
     setButtonDisabled(!isFormValid);
   }, [user]);
@@ -383,20 +382,24 @@ const ChangeRequestForm = () => {
       </div>
 
       <h2 className="mb-5">
-        NOTE: For Property Ownership attach certified copy of new title deed,
-        previous property owner written confirmation for reason of ownership
-        change, and for bank changes, attach bank confirmation letter, title
-        deed with holder name matching the account name and/or property owner
-        confirmation (affidavit) of reason why account name is different. User
-        system account name change, property owner&apos;s confirmation
-        (affidavit) of change.
+        NOTE: <br /> 1. For Property Ownership, attach certified copy of new
+        title deed, previous property owner written confirmation for reason of
+        ownership change. <br /> 2. For bank changes, attach bank confirmation
+        letter, title deed with holder name matching the account name and/or
+        property owner confirmation (affidavit) of reason why account name is
+        different. <br /> 3. User system account name change, property
+        owner&apos;s confirmation (affidavit) of change. <br /> 4. In the case
+        of other, attach all the necessary documentation.
       </h2>
+
       <label htmlFor="uploads">Upload Files</label>
       <input
         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
         id="uploads"
         name="uploads"
         type="file"
+        accept="image/*"
+        multiple
         value={user.uploads}
         onChange={(e) => setUser({ ...user, uploads: e.target.value })}
       />

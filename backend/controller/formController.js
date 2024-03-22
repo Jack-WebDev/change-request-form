@@ -1,4 +1,4 @@
-const db = require("../db/db");
+// const db = require("../db/db");
 
 const postForm = async (req, res) => {
   const {
@@ -22,31 +22,33 @@ const postForm = async (req, res) => {
     uploads,
   } = req.body;
 
-  console.log(uploads,urgent,routine,critical,reasonForChange)
+  console.log(uploads);
+        const files = req.files
+        console.log(files)
 
   try {
-    await db("nsfas-form").insert({
-      propertyID: propertyID,
-      propertyAddress: propertyAddress,
-      propertyName: propertyName,
-      changeDescriptionDetails: changeDescriptionDetails,
-      bankDetailsChange: bankDetailsChange,
-      propertyOwnershipChange: propertyOwnershipChange,
-      accountNameChange: accountNameChange,
-      otherChange: otherChange,
-      reasonForChange: reasonForChange,
-      desiredOutcome: desiredOutcome,
-      requestorID: requestorID,
-      requestorName: requestorName,
-      requestorJobTitle: requestorJobTitle,
-      date: date,
-      urgent: urgent,
-      critical: critical,
-      routine: routine,
-      uploads: uploads,
-    });
+    res.status(201).json({ message: "sent!" });
 
-    res.status(201).json({message: "sent!"})
+    // await db("nsfas-form").insert({
+    //   propertyID: propertyID,
+    //   propertyAddress: propertyAddress,
+    //   propertyName: propertyName,
+    //   changeDescriptionDetails: changeDescriptionDetails,
+    //   bankDetailsChange: bankDetailsChange,
+    //   propertyOwnershipChange: propertyOwnershipChange,
+    //   accountNameChange: accountNameChange,
+    //   otherChange: otherChange,
+    //   reasonForChange: reasonForChange,
+    //   desiredOutcome: desiredOutcome,
+    //   requestorID: requestorID,
+    //   requestorName: requestorName,
+    //   requestorJobTitle: requestorJobTitle,
+    //   date: date,
+    //   urgent: urgent,
+    //   critical: critical,
+    //   routine: routine,
+    //   uploads: uploads,
+    // });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
