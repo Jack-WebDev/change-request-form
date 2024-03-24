@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 import axios from "axios";
 import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../components/DateInput.css"
 
 const userSchema = z.object({
   propertyID: z

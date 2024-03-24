@@ -20,9 +20,11 @@ const postForm = async (req, res, next) => {
     critical,
     routine,
   } = req.body;
+  const files = req.files;
+
 
   try {
-    await db("nsfas-form").insert({
+    const [nsfasFormID] = await db("nsfas-form").insert({
       propertyID: propertyID,
       propertyAddress: propertyAddress,
       propertyName: propertyName,
@@ -40,23 +42,16 @@ const postForm = async (req, res, next) => {
       urgent: urgent,
       critical: critical,
       routine: routine,
-    });
-    next();
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+    }).returning("id");
 
-const uploads = async (req, res) => {
-  const files = req.files;
-
-  try {
+    
     for (const file of files) {
       await db("uploads").insert({
         filename: file.filename,
         path: file.path,
         mimetype: file.mimetype,
         size: file.size,
+        nsfas_form_id: nsfasFormID.id
       });
     }
 
@@ -66,7 +61,7 @@ const uploads = async (req, res) => {
   }
 };
 
+
 module.exports = {
-  postForm,
-  uploads,
+  postForm
 };

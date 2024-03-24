@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const postRouter = express.Router();
-const { postForm, uploads } = require("../controller/formController");
+const { postForm } = require("../controller/formController");
 
 const storage = multer.diskStorage({
   destination: "uploads/",
@@ -19,7 +19,7 @@ const upload = multer({
   storage: storage,
 });
 
-postRouter.post("/changeRequest",upload.array("files"), postForm, uploads);
+postRouter.post("/changeRequest",upload.array("files"), postForm);
 
 
 module.exports = postRouter;
