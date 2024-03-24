@@ -1,6 +1,6 @@
-// const db = require("../db/db");
+const db = require("../db/db");
 
-const postForm = async (req, res) => {
+const postForm = async (req, res, next) => {
   const {
     propertyID,
     propertyAddress,
@@ -19,39 +19,54 @@ const postForm = async (req, res) => {
     urgent,
     critical,
     routine,
-    uploads,
   } = req.body;
 
-  console.log(uploads);
-        const files = req.files
-        console.log(files)
-
   try {
-    res.status(201).json({ message: "sent!" });
-
-    // await db("nsfas-form").insert({
-    //   propertyID: propertyID,
-    //   propertyAddress: propertyAddress,
-    //   propertyName: propertyName,
-    //   changeDescriptionDetails: changeDescriptionDetails,
-    //   bankDetailsChange: bankDetailsChange,
-    //   propertyOwnershipChange: propertyOwnershipChange,
-    //   accountNameChange: accountNameChange,
-    //   otherChange: otherChange,
-    //   reasonForChange: reasonForChange,
-    //   desiredOutcome: desiredOutcome,
-    //   requestorID: requestorID,
-    //   requestorName: requestorName,
-    //   requestorJobTitle: requestorJobTitle,
-    //   date: date,
-    //   urgent: urgent,
-    //   critical: critical,
-    //   routine: routine,
-    //   uploads: uploads,
-    // });
+    await db("nsfas-form").insert({
+      propertyID: propertyID,
+      propertyAddress: propertyAddress,
+      propertyName: propertyName,
+      changeDescriptionDetails: changeDescriptionDetails,
+      bankDetailsChange: bankDetailsChange,
+      propertyOwnershipChange: propertyOwnershipChange,
+      accountNameChange: accountNameChange,
+      otherChange: otherChange,
+      reasonForChange: reasonForChange,
+      desiredOutcome: desiredOutcome,
+      requestorID: requestorID,
+      requestorName: requestorName,
+      requestorJobTitle: requestorJobTitle,
+      date: date,
+      urgent: urgent,
+      critical: critical,
+      routine: routine,
+    });
+    next();
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
 
-module.exports = postForm;
+const uploads = async (req, res) => {
+  const files = req.files;
+
+  try {
+    for (const file of files) {
+      await db("uploads").insert({
+        filename: file.filename,
+        path: file.path,
+        mimetype: file.mimetype,
+        size: file.size,
+      });
+    }
+
+    return res.status(201).json({ message: "submitted and files uploaded" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  postForm,
+  uploads,
+};

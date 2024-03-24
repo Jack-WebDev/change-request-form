@@ -22,9 +22,9 @@ exports.up = function(knex) {
         t.boolean('critical').defaultTo(false);
         t.boolean('urgent').defaultTo(false);
         t.boolean('routine').defaultTo(false);
-        t.string('uploads');
         t.timestamp("createdAt").defaultTo(knex.fn.now());
     })
+
 };
 
 /**
@@ -32,5 +32,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.dropTable("nsfas-form")
+    return knex.schema.dropTable("nsfas-form");
 };

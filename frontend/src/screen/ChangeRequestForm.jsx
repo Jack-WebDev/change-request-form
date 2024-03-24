@@ -1,9 +1,8 @@
 import { z, ZodError } from "zod";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DateInput from "../components/DateInput";
 
 const userSchema = z.object({
   propertyID: z
@@ -41,7 +40,6 @@ const userSchema = z.object({
   propertyOwnershipChange: z.boolean().default(false),
   accountNameChange: z.boolean().default(false),
   otherChange: z.boolean().default(false),
-  uploads: z.string(),
 });
 
 const ChangeRequestForm = () => {
@@ -63,21 +61,57 @@ const ChangeRequestForm = () => {
     urgent: false,
     critical: false,
     routine: false,
-    uploads: "",
   });
+  const [files,setFiles] = useState([])
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
 
+  const [selectedDate, setSelectedDate] = useState('');
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
+
       const validatedData = userSchema.parse(user);
+      const formData = new FormData()
+      formData.append("propertyID",validatedData.propertyID),
+      formData.append("propertyAddress",validatedData.propertyAddress),
+      formData.append("bankDetailsChange",validatedData.bankDetailsChange),
+      formData.append("propertyOwnershipChange",validatedData.propertyOwnershipChange),
+      formData.append("accountNameChange",validatedData.accountNameChange),
+      formData.append("otherChange", validatedData.otherChange),
+      formData.append("propertyName", validatedData.propertyName),
+      formData.append("desiredOutcome", validatedData.desiredOutcome),
+      formData.append("requestorID", validatedData.requestorID),
+      formData.append("reasonForChange", validatedData.reasonForChange),
+      formData.append("date", selectedDate),
+      formData.append("changeDescriptionDetails", validatedData.changeDescriptionDetails),
+      formData.append("requestorName", validatedData.requestorName),
+      formData.append("requestorJobTitle", validatedData.requestorJobTitle),
+      formData.append("urgent", validatedData.urgent),
+      formData.append("critical", validatedData.critical),
+      formData.append("routine", validatedData.routine),
+          files.forEach((file) => {
+      formData.append('files', file);
+    });
+
       setLoading(true);
       console.log("....");
       const response = await axios.post(
         "http://localhost:8001/api/changeRequest",
-        validatedData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       console.log("Submission success", response.data);
       navigate("/success");
@@ -101,13 +135,16 @@ const ChangeRequestForm = () => {
       user.requestorID.length === 13 &&
       user.requestorName.length >= 3 &&
       user.requestorJobTitle.length >= 3 &&
-      user.uploads;
+      files;
 
     setButtonDisabled(!isFormValid);
-  }, [user]);
+  }, [user,files]);
 
   return (
-    <div className="container flex flex-col items-center justify-center min-h-screen py-2">
+    <form
+      encType="multipart/form-data"
+      className="container flex flex-col items-center justify-center min-h-screen py-2"
+    >
       <h1 className="text-3xl mb-5">
         {loading ? "Processing" : "Change Request Form"}
       </h1>
@@ -320,7 +357,14 @@ const ChangeRequestForm = () => {
 
       <div className="date grid w-4/5 mb-8">
         <label htmlFor="date">Date</label>
-        <DateInput />
+        {/* <DateInput /> */}
+      <input
+        type="date"
+        id="dateInput"
+        value={selectedDate}
+        min={today}
+        onChange={handleDateChange}
+      />
       </div>
 
       <h2>Priority</h2>
@@ -396,18 +440,17 @@ const ChangeRequestForm = () => {
       <input
         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
         id="uploads"
-        name="uploads"
+        name="files"
         type="file"
         accept="image/*"
         multiple
-        value={user.uploads}
-        onChange={(e) => setUser({ ...user, uploads: e.target.value })}
+        onChange={(e) => setFiles([...files, ...e.target.files])}
       />
 
       <button
         onClick={onSubmit}
         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
-        disabled={buttonDisabled}
+            disabled={buttonDisabled}
       >
         Submit
       </button>
@@ -418,7 +461,7 @@ const ChangeRequestForm = () => {
           ))}
         </ul>
       )}
-    </div>
+    </form>
   );
 };
 
